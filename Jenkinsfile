@@ -31,19 +31,26 @@ pipeline {
         }
 
         stage('Deploy NGINX') {
-    steps {
-        sh '''
-        docker rm -f nginx-lb || true
+            steps {
+                sh '''
+                docker rm -f nginx-lb || true
 
-        docker run -d --name nginx-lb \
-          --network app-network \
-          -p 8081:80 \
-          -v $WORKSPACE/nginx/default.conf:/etc/nginx/conf.d/default.conf \
-          nginx
-        '''
-    }
-}
+                docker run -d --name nginx-lb \
+                  --network app-network \
+                  -p 8081:80 \
+                  -v $WORKSPACE/nginx/default.conf:/etc/nginx/conf.d/default.conf \
+                  nginx
+                '''
             }
+        }
+    }
+
+    post {
+        success {
+            echo 'Pipeline executed successfully!'
+        }
+        failure {
+            echo 'Pipeline failed. Check console logs.'
         }
     }
 }
