@@ -31,20 +31,11 @@ pipeline {
 
                 docker run -d --name nginx-lb \
                   --network app-network \
-                   -p 8081:80 \
+                  -p 8081:80 \
                   -v $(pwd)/nginx:/etc/nginx/conf.d \
                   nginx
                 '''
             }
-        }
-    }
-
-    post {
-        success {
-            echo 'Pipeline executed successfully!'
-        }
-        failure {
-            echo 'Pipeline failed. Check console logs for errors.'
         }
     }
 }
