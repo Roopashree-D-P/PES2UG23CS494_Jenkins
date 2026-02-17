@@ -31,7 +31,7 @@ pipeline {
 
                 docker run -d --name nginx-lb \
                   --network app-network \
-                  -p 80:80 \
+                   -p 8081:80 \
                   -v $(pwd)/nginx:/etc/nginx/conf.d \
                   nginx
                 '''
