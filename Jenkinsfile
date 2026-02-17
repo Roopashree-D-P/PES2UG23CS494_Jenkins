@@ -6,16 +6,22 @@ pipeline {
         stage('Build Backend Image') {
             steps {
                 sh '''
-                docker rmi -f backend-app || true
                 docker build -t backend-app backend
                 '''
             }
         }
 
-        stage('Deploy Backend Containers') {
+        stage('Create Network') {
             steps {
                 sh '''
                 docker network create app-network || true
+                '''
+            }
+        }
+
+        stage('Deploy Backends') {
+            steps {
+                sh '''
                 docker rm -f backend1 backend2 || true
 
                 docker run -d --name backend1 --network app-network backend-app
@@ -24,7 +30,7 @@ pipeline {
             }
         }
 
-        stage('Deploy NGINX Load Balancer') {
+        stage('Deploy NGINX') {
             steps {
                 sh '''
                 docker rm -f nginx-lb || true
